@@ -7,3 +7,6 @@
     - maven-sure-fire plugin
 - 회원 가입 기능(JoinService)
    - models/member/JoinService.java
+- 톰캣10 서버 설정
+- 회원 가입 기능 설계(JoinService)
+   - modles/member/JoinService.java
