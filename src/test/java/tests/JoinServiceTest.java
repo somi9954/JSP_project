@@ -22,87 +22,105 @@ public class JoinServiceTest {
         return Member.builder()
                 .userId("user" + System.currentTimeMillis())
                 .userPw(userPw)
-                .conformUserPw(userPw)
-                .userNm("사용자01")
+                .confirmUserPw(userPw)
+                .userNm("사용자")
                 .email("user@test.org")
                 .agree(true)
                 .build();
     }
+
     @Test
-    @DisplayName("회원가입 성공시 예외 발생 하지 않음")
+    @DisplayName("회원가입 성공시 예외발생하지 않음")
     void joinSuccess() {
         assertDoesNotThrow(() -> {
+
             joinService.join(getMember());
         });
     }
 
     @Test
-    @DisplayName(" 필수 항목 검증(아이디, 비밀번호, 비밀번호 확인, 회원명, 이메일, 회원가입약관 동의), 검증 실패시 BadRequestException 발생")
+    @DisplayName("필수 항목 검증(아이디, 비밀번호, 비밀번호 확인, 회원명, 이메일, 회원가입약관 동의), 검증 실패시 BadRequestException 발생")
     void requiredFieldCheck() {
         assertAll(
                 () -> {
-                    // 아이디 검증 (userId)
+                    // 아이디 검증(userId)
                     Member member = getMember();
                     member.setUserId(null);
-                    requiredFieldEachCheck(member,"아이디");
+                    fieldEachCheck(member, "아이디");
 
-                    member.setUserId("   ");
-                    requiredFieldEachCheck(member, "아이디");
-
+                    member.setUserId("  ");
+                    fieldEachCheck(member, "아이디");
                 },
-        () -> {
-            // 비밀번호 검증 (userPw)
-            Member member = getMember();
-            member.setUserPw(null);
-            requiredFieldEachCheck(member,"비밀번호");
+                () -> {
+                    // 비밀번호 검증(userPw)
+                    Member member = getMember();
+                    member.setUserPw(null);
+                    fieldEachCheck(member, "비밀번호");
 
-            member.setUserPw("   ");
-            requiredFieldEachCheck(member, "비밀번호");
+                    member.setUserPw("  ");
+                    fieldEachCheck(member, "비밀번호");
+                },
+                () -> {
+                    // 비밀번호 확인(confirmUserPw)
+                    Member member = getMember();
+                    member.setConfirmUserPw(null);
+                    fieldEachCheck(member, "비밀번호를 확인");
 
-        },
-        () -> {
-            // 비밀번호 확인 (confirmUserPw)
-            Member member = getMember();
-            member.setConformUserPw(null);
-            requiredFieldEachCheck(member,"비밀번호");
+                    member.setConfirmUserPw("  ");
+                    fieldEachCheck(member, "비밀번호를 확인");
+                },
+                () -> {
+                    // 회원명 검증(userNm)
+                    Member member = getMember();
+                    member.setUserNm(null);
+                    fieldEachCheck(member, "회원명");
 
-            member.setConformUserPw("   ");
-            requiredFieldEachCheck(member, "비밀번호");
+                    member.setUserNm("  ");
+                    fieldEachCheck(member, "회원명");
+                },
+                () -> {
+                    // 이메일 검증(email)
+                    Member member = getMember();
+                    member.setEmail(null);
+                    fieldEachCheck(member, "이메일");
 
-        },
-        () -> {
-            // 회원명 검증 (userNm)
-            Member member = getMember();
-            member.setUserNm(null);
-            requiredFieldEachCheck(member,"회원명");
-
-            member.setUserNm("   ");
-            requiredFieldEachCheck(member, "비밀번호");
-
-        },
-        () -> {
-            // 이메일 검증 (email)
-            Member member = getMember();
-            member.setEmail(null);
-            requiredFieldEachCheck(member,"이메일");
-
-            member.setEmail("   ");
-            requiredFieldEachCheck(member, "이메일");
-
-        },
-        () -> {
-            // 회원 약관 동의 검증 (agree)
-            Member member = getMember();
-            member.setAgree(false);
-            requiredFieldEachCheck(member,"약관");
+                    member.setEmail("  ");
+                    fieldEachCheck(member, "이메일");
+                },
+                () -> {
+                    // 약관 동의 검증(agree)
+                    Member member = getMember();
+                    member.setAgree(false);
+                    fieldEachCheck(member, "약관");
                 }
         );
     }
 
-    private void  requiredFieldEachCheck(Member member, String word) {
+    private void fieldEachCheck(Member member, String word) {
         BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
             joinService.join(member);
         });
+
         assertTrue(thrown.getMessage().contains(word));
+
+    }
+
+    @Test
+    @DisplayName("아이디(6자리 이상), 비밀번호(8자리 이상) 최소 자리수 체크, 실패시 BadRequestException 발생")
+    void fieldLengthCheck() {
+        assertAll(
+                () -> {
+                    // 아이디 6자리 이상 검증
+                    Member member = getMember();
+                    member.setUserId("user");
+                    fieldEachCheck(member, "아이디는 6자리");
+                },
+                () -> {
+                    // 비밀번호 8자리 이상 검증
+                    Member member =getMember();
+                    member.setUserPw("1234");
+                    fieldEachCheck(member, "비밀번호는 8자리");
+                }
+        );
     }
 }

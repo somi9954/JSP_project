@@ -7,8 +7,8 @@ import lombok.Data;
 public class Member {
     private String userId;
     private String userPw;
-    private  String conformUserPw;
+    private String confirmUserPw;
     private String userNm;
     private String email;
-    private boolean agree; //약관 동의
+    private boolean agree; // 약관 동의
 }
