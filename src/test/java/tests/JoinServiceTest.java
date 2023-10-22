@@ -1,6 +1,7 @@
 package tests;
 
 import commons.BadRequestException;
+import commons.DuplicateMemberException;
 import models.member.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -133,5 +134,16 @@ public class JoinServiceTest {
         });
         assertTrue(thrown.getMessage().contains("비밀번호가 일치"));
 
+    }
+
+    @Test
+    @DisplayName("중복 가입 체크, 중복 가입인 경우 DuplicateMemberException 발생")
+    void duplicateJoinCheck() {
+        assertThrows(DuplicateMemberException.class, () -> {
+            Member member = getMember();
+            joinService.join(member);
+
+            joinService.join(member);
+        });
     }
 }
