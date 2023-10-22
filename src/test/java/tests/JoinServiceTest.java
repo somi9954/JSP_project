@@ -15,6 +15,7 @@ public class JoinServiceTest {
     private JoinService joinService;
     @BeforeEach
     void init() {
+        MemberDao.clearData();
         joinService = ServiceManager.getInstance().joinService();
     }
 
@@ -141,8 +142,10 @@ public class JoinServiceTest {
     void duplicateJoinCheck() {
         assertThrows(DuplicateMemberException.class, () -> {
             Member member = getMember();
+            String userPw = member.getUserPw();
             joinService.join(member);
 
+            member.setUserPw(userPw);
             joinService.join(member);
         });
     }
