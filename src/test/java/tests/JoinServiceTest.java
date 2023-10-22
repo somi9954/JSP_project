@@ -39,17 +39,70 @@ public class JoinServiceTest {
     @Test
     @DisplayName(" 필수 항목 검증(아이디, 비밀번호, 비밀번호 확인, 회원명, 이메일, 회원가입약관 동의), 검증 실패시 BadRequestException 발생")
     void requiredFieldCheck() {
-        //아이디가 (userId)가  null 또는 빈값("")
-        assertThrows(BadRequestException.class, () -> {
+        assertAll(
+                () -> {
+                    // 아이디 검증 (userId)
+                    Member member = getMember();
+                    member.setUserId(null);
+                    requiredFieldEachCheck(member,"아이디");
+
+                    member.setUserId("   ");
+                    requiredFieldEachCheck(member, "아이디");
+
+                },
+        () -> {
+            // 비밀번호 검증 (userPw)
             Member member = getMember();
+            member.setUserPw(null);
+            requiredFieldEachCheck(member,"비밀번호");
 
-            member.setUserId(null);
-            joinService.join(member);
+            member.setUserPw("   ");
+            requiredFieldEachCheck(member, "비밀번호");
 
-            member.setUserId("       ");
-            joinService.join(member);
-        });
+        },
+        () -> {
+            // 비밀번호 확인 (confirmUserPw)
+            Member member = getMember();
+            member.setConformUserPw(null);
+            requiredFieldEachCheck(member,"비밀번호");
+
+            member.setConformUserPw("   ");
+            requiredFieldEachCheck(member, "비밀번호");
+
+        },
+        () -> {
+            // 회원명 검증 (userNm)
+            Member member = getMember();
+            member.setUserNm(null);
+            requiredFieldEachCheck(member,"회원명");
+
+            member.setUserNm("   ");
+            requiredFieldEachCheck(member, "비밀번호");
+
+        },
+        () -> {
+            // 이메일 검증 (email)
+            Member member = getMember();
+            member.setEmail(null);
+            requiredFieldEachCheck(member,"이메일");
+
+            member.setEmail("   ");
+            requiredFieldEachCheck(member, "이메일");
+
+        },
+        () -> {
+            // 회원 약관 동의 검증 (agree)
+            Member member = getMember();
+            member.setAgree(false);
+            requiredFieldEachCheck(member,"약관");
+                }
+        );
     }
 
-
+    private void  requiredFieldEachCheck(Member member, String word) {
+        BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
+            joinService.join(member);
+        });
+        assertTrue(thrown.getMessage().contains(word));
+    }
 }
