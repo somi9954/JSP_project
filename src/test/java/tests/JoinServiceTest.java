@@ -1,7 +1,7 @@
 package tests;
 
 import commons.BadRequestException;
-import commons.DuplicateMemberException;
+import models.member.DuplicateMemberException;
 import models.member.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
