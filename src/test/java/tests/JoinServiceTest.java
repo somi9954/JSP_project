@@ -21,6 +21,7 @@ public class JoinServiceTest {
         return Member.builder()
                 .userid("user" + System.currentTimeMillis())
                 .userPw("12345678")
+                .conformUserPw("12345678")
                 .userNm("사용자01")
                 .email("user@test.org")
                 .agree(true)
