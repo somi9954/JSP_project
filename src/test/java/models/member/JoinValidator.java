@@ -27,6 +27,7 @@ public class JoinValidator implements Validator<Member>, RequiredValidator, Leng
         lengthCheck(userPw, 8 , new BadRequestException("비밀번호는 8자리 이상 입력하세요."));
         // 아이디, 비밀번호 자리수 체크 E
 
-
+        // 비밀번호, 비밀번호 확인 일치 여부
+        requiredTrue(userPw.equals(confirmUserPw), new BadRequestException("비밀번호가 일치하지 않습니다."));
     }
 }
