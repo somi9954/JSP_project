@@ -1,5 +1,6 @@
 package controllers.member;
 
+import static commons.ScriptUtil.*;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,12 +27,11 @@ public class JoinController extends HttpServlet {
         try {
             JoinService service = ServiceManager.getInstance().joinService();
             service.join(req);
-        } catch (RuntimeException e) {
-            resp.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = resp.getWriter();
-            out.printf("<script>alert('%s');history.back();</script>", e.getMessage());
 
-            e.printStackTrace();
+            //resp.sendRedirect(req.getContextPath() + "/member/login");
+
+        } catch (RuntimeException e) {
+            alertError(resp, e);
         }
     }
 }
