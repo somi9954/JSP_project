@@ -46,4 +46,11 @@
 - 로그아웃
   - Controller : /member/logout
     - controllers/member/LogoutController.java
-  - GET, POST 메서드 상관 없이 기능 할 수 있도록 처리 
+  - GET, POST 메서드 상관 없이 기능 할 수 있도록 처리
+
+## 완성화면
+### 회원가입
+
+### 로그인
+
+### 메인페이지
