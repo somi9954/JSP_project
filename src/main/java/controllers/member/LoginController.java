@@ -19,9 +19,10 @@ import static commons.ScriptUtil.go;
 public class LoginController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        req.setAttribute("addCss", new String[] {"member/login"});
         RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/templates/member/login.jsp");
         rd.forward(req, resp);
+
 
     }
 

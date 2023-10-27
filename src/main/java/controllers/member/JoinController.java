@@ -17,9 +17,12 @@ import java.io.PrintWriter;
 public class JoinController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("addCss", new String[] {"member/join"});
+        req.setAttribute("addScript", new String[] {"member/common"});
 
         RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/templates/member/join.jsp");
         rd.forward(req, resp);
+
     }
 
     @Override

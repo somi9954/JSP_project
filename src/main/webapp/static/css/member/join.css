@@ -1,0 +1,12 @@
+dt {text-align: left; margin: 10px 0 10px 20px;  position: relative;
+    left: 120px;}
+.agree { text-align: center;}
+.btns {justify-content: space-between; }
+button + button {margin-left: 3px; }
+h1.join_title {margin-bottom: auto; border-block: none;}
+.join {
+    text-align: center;
+    margin: 0 auto;
+    width: 50%;
+}
+

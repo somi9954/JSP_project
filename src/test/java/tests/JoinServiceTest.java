@@ -1,6 +1,7 @@
 package tests;
 
 import commons.BadRequestException;
+import commons.Validator;
 import jakarta.servlet.http.HttpServletRequest;
 import models.member.DuplicateMemberException;
 import models.member.*;
@@ -14,7 +15,10 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 
 @DisplayName("회원가입 기능 단위 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -24,9 +28,14 @@ public class JoinServiceTest {
     private JoinService joinService;
     @Mock
     private HttpServletRequest request;
+
+    @Mock
+    private Validator validator;
+
     @BeforeEach
     void init() {
         MemberDao.clearData();
+
         joinService = ServiceManager.getInstance().joinService();
     }
 
@@ -38,6 +47,7 @@ public class JoinServiceTest {
                 .confirmUserPw(userPw)
                 .userNm("사용자")
                 .email("user@test.org")
+                .mobile("010-1234-1234")
                 .agree(true)
                 .build();
     }
@@ -50,6 +60,7 @@ public class JoinServiceTest {
             joinService.join(getMember());
         });
     }
+
     @Test
     @DisplayName("HttpServletRequest 요청 데이터로 성공 테스트")
     void joinSuccessByRequest() {
@@ -59,6 +70,7 @@ public class JoinServiceTest {
         given(request.getParameter("confirmUserPw")).willReturn(member.getConfirmUserPw());
         given(request.getParameter("userNm")).willReturn(member.getUserNm());
         given(request.getParameter("email")).willReturn(member.getEmail());
+        given(request.getParameter("mobile")).willReturn(member.getMobile());
         given(request.getParameter("agree")).willReturn("" + member.isAgree());
 
         joinService.join(request);
@@ -114,6 +126,24 @@ public class JoinServiceTest {
                     fieldEachCheck(member, "이메일");
                 },
                 () -> {
+                    // 휴대전화 검증(mobile)
+                    Member member = getMember();
+                    member.setMobile(null);
+                    fieldEachCheck(member, "휴대전화번호");
+
+                    member.setMobile("    ");
+                    fieldEachCheck(member, "휴대전화번호");
+                },
+                () -> {
+                    // 이메일 검증(Email)
+                    Member member = getMember();
+                    member.setEmail(null);
+                    fieldEachCheck(member, "이메일");
+
+                    member.setEmail("    ");
+                    fieldEachCheck(member, "이메일");
+                },
+                () -> {
                     // 약관 동의 검증(agree)
                     Member member = getMember();
                     member.setAgree(false);
@@ -143,22 +173,42 @@ public class JoinServiceTest {
                 },
                 () -> {
                     // 비밀번호 8자리 이상 검증
-                    Member member =getMember();
+                    Member member = getMember();
                     member.setUserPw("1234");
+                    fieldEachCheck(member, "비밀번호는 8자리");
+                },
+                () -> {
+                    // 휴대전화 10자리 이상 검증
+                    Member member = getMember();
+                    member.setMobile("1234");
                     fieldEachCheck(member, "비밀번호는 8자리");
                 }
         );
     }
+
     @Test
     @DisplayName("비밀번호, 비밀번호 확인 입력 데이터 일치 여부 체크, 검증 실패시 BadRequestException 발생")
     void passwordConfirmCheck() {
         BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
-           Member member = getMember();
-           member.setConfirmUserPw(member.getUserPw() + "**");
-           joinService.join(member);
+            Member member = getMember();
+            member.setConfirmUserPw(member.getUserPw() + "**");
+            joinService.join(member);
         });
         assertTrue(thrown.getMessage().contains("비밀번호가 일치"));
 
+    }
+
+    @Test
+    @DisplayName("휴대 전화 번호 유효성 검사 체크, 검증 실패시 BadRequestException 발생")
+    void mobileValidationCheck() {
+        Member member = getMember();
+        String invalidMobile = "123"; // 유효하지 않은 휴대전화번호 예시
+        member.setMobile(invalidMobile);
+        BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
+            joinService.join(member);
+        });
+
+        assertTrue(thrown.getMessage().contains("휴대전화번호 형식"));
     }
 
     @Test
@@ -173,4 +223,20 @@ public class JoinServiceTest {
             joinService.join(member);
         });
     }
+
+    @Test
+    @DisplayName("이메일 유효성 검사 체크, 검증 실패시 BadRequestException 발생")
+    void EmailValidationCheck() {
+        Member member = getMember();
+        String invalidEmail = "invalidemail";
+        member.setEmail(invalidEmail); // 유효하지 않은 이메일 설정
+
+        BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
+            joinService.join(member);
+
+        });
+        assertTrue(thrown.getMessage().contains("메일주소"));
+    }
 }
+
+

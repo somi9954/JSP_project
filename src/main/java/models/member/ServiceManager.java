@@ -1,5 +1,9 @@
 package models.member;
 
+import commons.Validator;
+import jakarta.servlet.http.HttpServletRequest;
+
+
 public class ServiceManager {
 
     private static ServiceManager instance;
@@ -26,7 +30,12 @@ public class ServiceManager {
     }
 
     public JoinService joinService() {
-        return new JoinService(joinValidator(), memberDao());
+        return new JoinService(joinValidator(),memberDao());
+    }
+    public MobileValidator mobileValidator() {
+        MobileValidator validator = new MobileValidator();
+        validator.setMemberDao(memberDao());
+        return validator;
     }
 
     public LoginValidator loginValidator() {
@@ -37,4 +46,5 @@ public class ServiceManager {
     public LoginService loginService() {
         return new LoginService(loginValidator(), memberDao());
     }
+
 }

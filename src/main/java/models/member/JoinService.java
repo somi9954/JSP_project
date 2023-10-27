@@ -10,6 +10,7 @@ public class JoinService {
     private Validator validator;
     private MemberDao memberDao;
 
+
     public JoinService(Validator validator, MemberDao memberDao) {
         this.validator = validator;
         this.memberDao = memberDao;
@@ -32,6 +33,7 @@ public class JoinService {
                 .confirmUserPw(request.getParameter("confirmUserPw"))
                 .email(request.getParameter("email"))
                 .userNm(request.getParameter("userNm"))
+                .mobile(request.getParameter("mobile"))
                 .agree(agree)
                 .build();
         join(member);

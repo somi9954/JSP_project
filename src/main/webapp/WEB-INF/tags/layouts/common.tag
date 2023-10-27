@@ -3,22 +3,22 @@
 <%@ attribute name="title" %>
 <%@ attribute name="header" fragment="true" %>
 <%@ attribute name="footer" fragment="true" %>
-<c:url var="commonCss" value="/css/style.css" />
-<c:url var="commonJs" value="/js/common.js" />
-<c:url var="cssUrl" value="/css/" />
-<c:url var="jsUrl" value="/js/" />
+<c:url var="commonCss" value="/static/css/style.css" />
+<c:url var="commonJs" value="/static/js/common.js" />
+<c:url var="cssUrl" value="/static/css/" />
+<c:url var="jsUrl" value="/static/js/" />
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>${title}</title>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
         <link rel="stylesheet" type="text/css" href="${commonCss}">
         <c:if test="${addCss != null}">
             <c:forEach var="path" items="${addCss}">
             <link rel="stylesheet" type="text/css" href="${cssUrl}${path}.css">
             </c:forEach>
         </c:if>
-
         <script src="${commonJs}"></script>
         <c:if test="${addScript != null}">
             <c:forEach var="path" items="${addScript}">

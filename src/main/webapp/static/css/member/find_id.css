@@ -1,0 +1,10 @@
+dt {text-align: left; margin: 10px 0 10px 20px; }
+.btns {justify-content: space-between; }
+button + button {margin-left: 3px; }
+h1.find_id {margin-bottom: auto; border-block: none; margin-top: 15px;}
+
+.find_id {
+    text-align: center; /* div 내부의 텍스트를 수평 가운데 정렬 */
+    margin: 0 auto; /* 가운데 정렬을 위한 왼쪽과 오른쪽 마진 설정 */
+    width: 50%; /* 원하는 가로 너비로 조정, 필요에 따라 조절 가능 */
+}
