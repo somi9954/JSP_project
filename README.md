@@ -55,10 +55,13 @@
 
 ## 완성화면
 ### 회원가입
-<img src="https://github.com/somi9954/JSP_project/assets/137499604/e3aad281-fdf9-433f-9e18-636a5bdb7e63" width="500" height="650" />
+<img src="https://github.com/somi9954/JSP_project/assets/137499604/a6fda21a-1143-4d00-8cbd-7b69e0f55286" width="500" height="500" />
+
 
 ### 로그인
-<img src="https://github.com/somi9954/JSP_project/assets/137499604/11c2fe18-80c0-4d7f-b586-24c5b14ccca3" width="500" height="500" />
+<img src="https://github.com/somi9954/JSP_project/assets/137499604/b1ea3460-213a-467f-8e8f-bda362a865e1" width="500" height="500" />
+
 
 ### 메인페이지
-<img src="https://github.com/somi9954/JSP_project/assets/137499604/fa65e9d0-e558-4981-b976-f7cde4e82502" width="500" height="500" />
+<img src="https://github.com/somi9954/JSP_project/assets/137499604/e35c9bbc-c6c8-4870-b4f8-54b50162711d" width="500" height="500" />
+
