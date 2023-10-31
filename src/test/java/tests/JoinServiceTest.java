@@ -154,7 +154,7 @@ public class JoinServiceTest {
     }
 
     @Test
-    @DisplayName("아이디(6자리 이상), 비밀번호(8자리 이상) 최소 자리수 체크, 실패시 BadRequestException 발생")
+    @DisplayName("아이디(6자리 이상), 비밀번호(8자리 이상), 휴대전화번호(10자리 이상) 최소 자리수 체크, 실패시 BadRequestException 발생")
     void fieldLengthCheck() {
         assertAll(
                 () -> {
@@ -173,7 +173,7 @@ public class JoinServiceTest {
                     // 휴대전화 10자리 이상 검증
                     Member member = getMember();
                     member.setMobile("1234");
-                    fieldEachCheck(member, "비밀번호는 8자리");
+                    fieldEachCheck(member, "휴대전화번호는 10자리");
                 }
         );
     }
