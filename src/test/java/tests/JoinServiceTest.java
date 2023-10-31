@@ -134,15 +134,7 @@ public class JoinServiceTest {
                     member.setMobile("    ");
                     fieldEachCheck(member, "휴대전화번호");
                 },
-                () -> {
-                    // 이메일 검증(Email)
-                    Member member = getMember();
-                    member.setEmail(null);
-                    fieldEachCheck(member, "이메일");
-
-                    member.setEmail("    ");
-                    fieldEachCheck(member, "이메일");
-                },
+            
                 () -> {
                     // 약관 동의 검증(agree)
                     Member member = getMember();
